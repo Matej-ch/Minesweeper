@@ -1,28 +1,49 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+
+      <DifficultyOptions />
+
+    <div class="board">
+      <ScoreBoard/>
+
+      <GameBoard />
+    </div>
+
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import DifficultyOptions from "./components/DifficultyOptions";
+import GameBoard from "./components/GameBoard";
+import ScoreBoard from "@/components/ScoreBoard";
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    ScoreBoard,
+    GameBoard,
+    DifficultyOptions,
   }
 }
 </script>
 
-<style>
+<style lang="scss">
+
+  @import './assets/styles/normalize.css';
+  @import './assets/styles/main.css';
+
+  $bc: silver;
+
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+  display: flex;
+  width: 100%;
 }
+
+  .board {
+    background-color: $bc;
+  }
 </style>

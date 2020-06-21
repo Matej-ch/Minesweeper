@@ -1,4 +1,6 @@
-const state ={}
+const state ={
+    cells: [],
+}
 
 const getters ={}
 

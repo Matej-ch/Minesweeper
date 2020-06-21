@@ -1,0 +1,15 @@
+body {
+    margin: 0;
+    overflow: hidden;
+}
+* {
+    box-sizing: border-box;
+}
+
+body, html {
+    height: 100vh;
+}
+
+html {
+    font-size: calc(.65em - -.04vw);
+}

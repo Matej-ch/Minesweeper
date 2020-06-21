@@ -1,5 +1,5 @@
 const state = {
-    timer: 0,
+    timePassed: 0,
     maxFlagged: 10,
     difficulty: 'easy'
 }
