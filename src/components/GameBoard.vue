@@ -1,15 +1,27 @@
 <template>
-    <div>
+    <div class="gameboard">
 
     </div>
 </template>
 
 <script>
     export default {
-        name: "GameBoard"
+        name: "GameBoard",
+        method : {
+            generateGameBoard: function() {
+
+            }
+        },
     }
 </script>
 
-<style scoped>
-
+<style scoped lang="scss">
+    .gameboard {
+        background-color: silver;
+        padding: 15px;
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        font-size: 1.5em;
+    }
 </style>

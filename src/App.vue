@@ -1,7 +1,7 @@
 <template>
   <div id="app">
 
-      <DifficultyOptions />
+      <Settings />
 
     <div class="board">
       <ScoreBoard/>
@@ -13,16 +13,24 @@
 </template>
 
 <script>
-import DifficultyOptions from "./components/DifficultyOptions";
+import Settings from "./components/Settings";
 import GameBoard from "./components/GameBoard";
 import ScoreBoard from "@/components/ScoreBoard";
 
+import {mapActions} from 'vuex';
+
 export default {
   name: 'App',
+  created() {
+    this.setDifficulty({difficulty:'easy'});
+  },
   components: {
     ScoreBoard,
     GameBoard,
-    DifficultyOptions,
+    Settings,
+  },
+  methods: {
+    ...mapActions(['setDifficulty'])
   }
 }
 </script>
@@ -40,10 +48,13 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   display: flex;
+  flex-direction: row;
+  flex-flow: wrap;
   width: 100%;
 }
 
   .board {
     background-color: $bc;
+    width: 100%;
   }
 </style>
