@@ -2,8 +2,8 @@ const state ={
     cells: [],
 }
 
-const getters ={
-    generateCells: (state,getters) => {
+const getters = {
+    generatedCells: (state,getters) => {
         const bombs = Array.from({length: getters.width * getters.height});
 
         let planedBombs = 0;
@@ -15,7 +15,7 @@ const getters ={
             }
         }
 
-        return bombs.map((bomb, i, array) => {
+        state.cells = bombs.map((bomb, i, array) => {
             const { row, column } = getters.tileCoordinates(i);
 
             let surroundingBombs = 0;
@@ -35,6 +35,8 @@ const getters ={
                 surroundingBombs
             }
         });
+
+        return state.cells;
     },
     tileCoordinates: (state,rootState) => (index) => {
         return {
@@ -50,6 +52,9 @@ const getters ={
 
         // Return index
         return row * rootState.width + column;
+    },
+    gameFailed: (state) => {
+        return state.cells.find(cell => cell.bomb && cell.revealed);
     }
 }
 
