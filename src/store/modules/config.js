@@ -1,6 +1,7 @@
 const state = {
     timePassed: 0,
     flagsCount: 10,
+    flagsRemaining: 0,
     flaggedCells: 0,
     difficulty: 'easy',
     width: 8,
@@ -20,6 +21,12 @@ const getters = {
     },
     height: state => {
         return state.height;
+    },
+    size: state => {
+        return state.cellSize
+    },
+    flagsRemaining: state => {
+        return state.flagsRemaining
     }
 }
 

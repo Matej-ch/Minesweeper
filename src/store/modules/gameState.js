@@ -3,12 +3,12 @@ const state ={
 }
 
 const getters ={
-    /*generateCells: (state,rootState,getters) => {
-        const bombs = Array.from({length: rootState.width * rootState.height});
-        let planedBombs = 0;
+    generateCells: (state,getters) => {
+        const bombs = Array.from({length: getters.width * getters.height});
 
-        while (planedBombs !== rootState.bombsCount) {
-            const index = Math.floor(Math.random() * rootState.width * rootState.height);
+        let planedBombs = 0;
+        while (planedBombs !== getters.bombsCount) {
+            const index = Math.floor(Math.random() * getters.width * getters.height);
             if (!bombs[index]) {
                 bombs[index] = true;
                 planedBombs++;
@@ -35,7 +35,7 @@ const getters ={
                 surroundingBombs
             }
         });
-    },*/
+    },
     tileCoordinates: (state,rootState) => (index) => {
         return {
             row: Math.floor(index / rootState.width),

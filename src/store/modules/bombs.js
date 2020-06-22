@@ -4,7 +4,11 @@ const state ={
 }
 
 const getters = {
-    remainingBombs: state => {
+    remainingBombs: (state,rootState) => {
+        const numberOfFlaggedTiles = rootState.flagsRemaining/*getters.cells.filter((cell) => cell.flagged).length*/;
+        return state.bombsCount - numberOfFlaggedTiles;
+    },
+    bombsCount: function (state) {
         return state.bombsCount;
     }
 }

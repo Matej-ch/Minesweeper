@@ -1,6 +1,6 @@
 <template>
     <div class="scoreboard">
-        <div>{{ flags | addLeadingZeros }}</div>
+        <div>{{ remainingBombs | addLeadingZeros }}</div>
         <div><button @click="reset">RESET(SMILE FACE)</button></div>
         <div>{{ time | addLeadingZeros }}</div>
     </div>
@@ -13,7 +13,7 @@
     export default {
         name: "ScoreBoard",
         computed: {
-            ...mapGetters(['time','flags'])
+            ...mapGetters(['time','flags','remainingBombs'])
         },
         methods : {
             reset: function () {
