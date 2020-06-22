@@ -3,7 +3,7 @@
 
       <Settings />
 
-    <div class="board">
+    <div class="fullboard">
       <ScoreBoard/>
 
       <GameBoard />
@@ -15,7 +15,7 @@
 <script>
 import Settings from "./components/Settings";
 import GameBoard from "./components/GameBoard";
-import ScoreBoard from "@/components/ScoreBoard";
+import ScoreBoard from "./components/ScoreBoard";
 
 import {mapActions} from 'vuex';
 
@@ -23,6 +23,7 @@ export default {
   name: 'App',
   created() {
     this.setDifficulty({difficulty:'easy'});
+    this.setBombCount(10);
   },
   components: {
     ScoreBoard,
@@ -30,7 +31,7 @@ export default {
     Settings,
   },
   methods: {
-    ...mapActions(['setDifficulty'])
+    ...mapActions(['setDifficulty','setBombCount'])
   }
 }
 </script>
@@ -53,7 +54,7 @@ export default {
   width: 100%;
 }
 
-  .board {
+  .fullboard {
     background-color: $bc;
     width: 100%;
   }

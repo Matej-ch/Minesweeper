@@ -1,23 +1,26 @@
 <template>
     <div class="scoreboard">
-        <div>Flags count</div>
+        <div>{{ flags | addLeadingZeros }}</div>
         <div><button @click="reset">RESET(SMILE FACE)</button></div>
-        <div>times</div>
+        <div>{{ time | addLeadingZeros }}</div>
     </div>
 </template>
 
 <script>
 
-    import { mapActions } from "vuex";
+    import { mapActions,mapGetters } from "vuex";
 
     export default {
         name: "ScoreBoard",
+        computed: {
+            ...mapGetters(['time','flags'])
+        },
         methods : {
             reset: function () {
 
                 this.resetTimer();
             },
-            ...mapActions['resetTimer']
+            ...mapActions(['resetTimer'])
         }
     }
 </script>

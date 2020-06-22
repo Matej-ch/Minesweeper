@@ -9,7 +9,18 @@ const state = {
 }
 
 const getters = {
-
+    time: state => {
+        return state.timePassed;
+    },
+    flags: state => {
+        return state.flagsCount;
+    },
+    width: state => {
+        return state.width;
+    },
+    height: state => {
+        return state.height;
+    }
 }
 
 const mutations = {

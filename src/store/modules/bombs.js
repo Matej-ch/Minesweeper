@@ -4,17 +4,20 @@ const state ={
 }
 
 const getters = {
-}
-
-const actions = {
-    setBombCount({ commit },bombCount) {
-        commit('setBombCount',bombCount);
+    remainingBombs: state => {
+        return state.bombsCount;
     }
 }
 
 const mutations = {
     setBombCount(state,bombCount) {
         state.bombsCount = bombCount;
+    }
+}
+
+const actions = {
+    setBombCount({ commit },bombCount) {
+        commit('setBombCount',bombCount);
     }
 }
 

@@ -1,7 +1,7 @@
 import Vuex from 'vuex'
 import Vue from 'vue'
 import config from './modules/config'
-import cells from "./modules/cells"
+import gameState from "./modules/gameState"
 import bombs from "./modules/bombs"
 
 
@@ -10,7 +10,7 @@ Vue.use(Vuex);
 export default new Vuex.Store({
     modules: {
         config,
-        cells,
+        gameState,
         bombs
     },
     strict: process.env.NODE_ENV !== 'production'
