@@ -1,6 +1,6 @@
 <template>
     <div class="gameboard" :style="cssVars">
-        <Cell v-for="(cell,i) in cells" :key="i" :index="i" :cellData="cell"/>
+        <Cell v-for="cell in cells" :key="cell.id" :cellData="cell"/>
     </div>
 </template>
 

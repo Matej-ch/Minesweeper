@@ -1,7 +1,7 @@
 <template>
     <div class="cell"
          @click="reveal"
-         @contextmenu.prevent="flag()"
+         @contextmenu.prevent="flag"
          :class="{revealed: cellData.revealed, 'wrong-pick': /*gameFailed && */((cellData.bomb && cellData.revealed) || (!cellData.bomb && cellData.flagged))}"></div>
 </template>
 
@@ -15,23 +15,33 @@
             cellData: {
                 type: Object
             },
-            index: Number
         },
         computed : {
             ...mapGetters(['gameFailed','cells'])
         },
         methods: {
             reveal: function () {
-
-            },
-            flag: function () {
                 if(this.gameFailed) { return; }
 
-                if(this.index == undefined) { return; }
+                if(this.cellData.id == undefined) { return; }
 
-                this.updateCell(this.cells[this.index])
+                if(this.cellData.flagged) { return; }
+
+                if (!this.cellData.revealed) {
+                    this.updateCellReveal(this.cellData);
+
+
+                }
             },
-            ...mapActions(['updateCell'])
+            flag: function () {
+
+                if(this.gameFailed) { return; }
+
+                if(this.cellData.id == undefined) { return; }
+
+                this.updateCellFlag(this.cellData);
+            },
+            ...mapActions(['updateCellFlag','updateCellReveal'])
         }
     }
 </script>

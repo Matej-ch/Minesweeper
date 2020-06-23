@@ -32,6 +32,7 @@ const getters = {
                 bomb,
                 flagged: false,
                 revealed: false,
+                id: i,
                 surroundingBombs
             }
         });
@@ -63,9 +64,11 @@ const mutations = {
     setCells(state,cells) {
         state.cells = cells;
     },
-    updateCell(state,cell) {
-
-        state.cells.map(cll => (cll == cell) ? {...cll, flagged: !cll.flagged} : cll);
+    updateCellFlag(state,cell) {
+        state.cells = state.cells.map(cll => (cll.id === cell.id) ? {...cll, flagged: !cll.flagged} : cll);
+    },
+    updateCellReveal(state,cell) {
+        state.cells = state.cells.map(cll => (cll.id === cell.id) ? {...cll, revealed: true} : cll);
     }
 }
 
@@ -73,8 +76,11 @@ const actions = {
     setCells({commit},cells) {
         commit('setCells',cells);
     },
-    updateCell({commit},cell) {
-        commit('updateCell',cell);
+    updateCellFlag({commit},cell) {
+        commit('updateCellFlag',cell);
+    },
+    updateCellReveal({commit},cell) {
+        commit('updateCellReveal',cell);
     }
 }
 
