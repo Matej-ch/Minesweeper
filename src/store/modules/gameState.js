@@ -46,13 +46,12 @@ const getters = {
             column: index % rootState.width,
         };
     },
-    index: (rootState)  =>(row,column) => {
+    index: (state,rootState)  =>(row,column) => {
         if (row < 0) return;
         if (column < 0) return;
         if (row >= rootState.height) return;
         if (column >= rootState.width) return;
 
-        // Return index
         return row * rootState.width + column;
     },
     gameFailed: (state) => {

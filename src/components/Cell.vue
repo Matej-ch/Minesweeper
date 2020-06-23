@@ -2,7 +2,14 @@
     <div class="cell"
          @click="reveal"
          @contextmenu.prevent="flag"
-         :class="{revealed: cellData.revealed, 'wrong-pick': /*gameFailed && */((cellData.bomb && cellData.revealed) || (!cellData.bomb && cellData.flagged))}"></div>
+         :data-surrounding-bombs="cellData.surroundingBombs"
+         :class="{revealed: cellData.revealed, 'wrong-pick': gameFailed && ((cellData.bomb && cellData.revealed) || (!cellData.bomb && cellData.flagged))}">
+
+        <span v-if="cellData.flagged">F</span>
+        <span v-else-if="cellData.revealed && cellData.bomb">B</span>
+        <span v-else-if="cellData.revealed && cellData.surroundingBombs">{{ cellData.surroundingBombs }}</span>
+
+    </div>
 </template>
 
 <script>
