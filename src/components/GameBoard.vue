@@ -1,21 +1,25 @@
 <template>
     <div class="gameboard" :style="cssVars">
-        <Cell v-for="(cell,i) in generatedCells" :key="i" :cellData="cell"/>
+        <Cell v-for="(cell,i) in cells" :key="i" :index="i" :cellData="cell"/>
     </div>
 </template>
 
 <script>
 
     import Cell from "@/components/Cell";
-    import { mapGetters } from "vuex";
+    import { mapGetters,mapActions } from "vuex";
 
     export default {
         name: "GameBoard",
         components: {
             Cell
         },
+        created() {
+            let cells = this.generatedCells;
+            this.setCells(cells);
+        },
         computed: {
-            ...mapGetters(['width','height','size','generatedCells']),
+            ...mapGetters(['width','height','size','generatedCells','cells']),
             cssVars: function() {
                 return {
                     "--width": this.width,
@@ -24,7 +28,8 @@
                 }
             }
         },
-        method : {
+        methods : {
+            ...mapActions(['setCells'])
         },
     }
 </script>

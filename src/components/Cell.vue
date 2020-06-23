@@ -1,22 +1,37 @@
 <template>
     <div class="cell"
          @click="reveal"
+         @contextmenu.prevent="flag()"
          :class="{revealed: cellData.revealed, 'wrong-pick': /*gameFailed && */((cellData.bomb && cellData.revealed) || (!cellData.bomb && cellData.flagged))}"></div>
 </template>
 
 <script>
+
+    import { mapGetters,mapActions } from "vuex";
 
     export default {
         name: "Cell",
         props : {
             cellData: {
                 type: Object
-            }
+            },
+            index: Number
+        },
+        computed : {
+            ...mapGetters(['gameFailed','cells'])
         },
         methods: {
             reveal: function () {
 
-            }
+            },
+            flag: function () {
+                if(this.gameFailed) { return; }
+
+                if(this.index == undefined) { return; }
+
+                this.updateCell(this.cells[this.index])
+            },
+            ...mapActions(['updateCell'])
         }
     }
 </script>

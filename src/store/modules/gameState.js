@@ -15,7 +15,7 @@ const getters = {
             }
         }
 
-        state.cells = bombs.map((bomb, i, array) => {
+        return bombs.map((bomb, i, array) => {
             const { row, column } = getters.tileCoordinates(i);
 
             let surroundingBombs = 0;
@@ -35,7 +35,8 @@ const getters = {
                 surroundingBombs
             }
         });
-
+    },
+    cells: state => {
         return state.cells;
     },
     tileCoordinates: (state,rootState) => (index) => {
@@ -58,9 +59,24 @@ const getters = {
     }
 }
 
-const mutations = {}
+const mutations = {
+    setCells(state,cells) {
+        state.cells = cells;
+    },
+    updateCell(state,cell) {
 
-const actions = {}
+        state.cells.map(cll => (cll == cell) ? {...cll, flagged: !cll.flagged} : cll);
+    }
+}
+
+const actions = {
+    setCells({commit},cells) {
+        commit('setCells',cells);
+    },
+    updateCell({commit},cell) {
+        commit('updateCell',cell);
+    }
+}
 
 export  default  {
     state,
