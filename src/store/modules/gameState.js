@@ -56,6 +56,12 @@ const getters = {
     },
     gameFailed: (state) => {
         return state.cells.find(cell => cell.bomb && cell.revealed);
+    },
+    gameWon: (state,rootState) => {
+        return rootState.width * rootState.height - rootState.bombsCount === this.cells.filter((t) => t.revealed).length;
+    },
+    gameInProgress: () => {
+        return true;
     }
 }
 
