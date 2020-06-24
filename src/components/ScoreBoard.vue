@@ -17,7 +17,6 @@
         },
         methods : {
             reset: function () {
-                console.log('reset');
                 this.generateCells();
             },
             ...mapActions(['generateCells'])

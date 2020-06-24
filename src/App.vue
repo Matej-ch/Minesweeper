@@ -1,12 +1,16 @@
 <template>
   <div id="app">
+    <div class="h-container">
+      <div class="v-container">
 
-      <Settings />
+        <Settings />
 
-    <div class="fullboard">
-      <ScoreBoard/>
+        <div class="fullboard">
+          <ScoreBoard/>
 
-      <GameBoard />
+          <GameBoard />
+        </div>
+      </div>
     </div>
 
   </div>
@@ -50,13 +54,27 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   display: flex;
-  flex-direction: row;
   flex-flow: wrap;
-  width: 100%;
+  flex-direction: column;
+  justify-content: center;
 }
 
   .fullboard {
     background-color: $bc;
-    width: 100%;
+    padding: 0 20px 20px 20px;
+  }
+
+  .h-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    height: 100%;
+  }
+
+  .v-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100%;
   }
 </style>
