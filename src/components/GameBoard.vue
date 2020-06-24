@@ -7,19 +7,15 @@
 <script>
 
     import Cell from "@/components/Cell";
-    import { mapGetters,mapActions } from "vuex";
+    import { mapGetters } from "vuex";
 
     export default {
         name: "GameBoard",
         components: {
             Cell
         },
-        created() {
-            let cells = this.generatedCells;
-            this.setCells(cells);
-        },
         computed: {
-            ...mapGetters(['width','height','size','generatedCells','cells']),
+            ...mapGetters(['width','height','size','cells']),
             cssVars: function() {
                 return {
                     "--width": this.width,
@@ -29,7 +25,7 @@
             }
         },
         methods : {
-            ...mapActions(['setCells'])
+
         },
     }
 </script>

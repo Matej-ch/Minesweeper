@@ -1,5 +1,8 @@
 const state ={
     cells: [],
+    gameState: 0,
+    flagsCount: 10,
+    timePassed: 0,
 }
 
 const getters = {
@@ -58,10 +61,21 @@ const getters = {
         return state.cells.find(cell => cell.bomb && cell.revealed);
     },
     gameWon: (state,rootState) => {
-        return rootState.width * rootState.height - rootState.bombsCount === this.cells.filter((t) => t.revealed).length;
+        return (rootState.width * rootState.height - rootState.bombsCount) === state.cells.filter((t) => t.revealed).length;
     },
     gameInProgress: () => {
         return true;
+    },
+    gameStatus: (state,getters) => {
+        if(getters.gameFailed) return 'FAIL';
+        if(getters.gameWon) return 'WON';
+        return 'IN PROGRESS';
+    },
+    time: state => {
+        return state.timePassed;
+    },
+    flagsCount: state => {
+        return state.flagsCount;
     }
 }
 
@@ -74,7 +88,10 @@ const mutations = {
     },
     updateCellReveal(state,cell) {
         state.cells = state.cells.map(cll => (cll.id === cell.id) ? {...cll, revealed: true} : cll);
-    }
+    },
+    resetTimer(state) {
+        state.timePassed = 0 ;
+    },
 }
 
 const actions = {
@@ -86,7 +103,7 @@ const actions = {
     },
     updateCellReveal({commit},cell) {
         commit('updateCellReveal',cell);
-    }
+    },
 }
 
 export  default  {

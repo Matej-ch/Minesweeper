@@ -1,7 +1,4 @@
 const state = {
-    timePassed: 0,
-    flagsCount: 10,
-    flaggedCells: 0,
     difficulty: 'easy',
     width: 8,
     height: 8,
@@ -9,12 +6,6 @@ const state = {
 }
 
 const getters = {
-    time: state => {
-        return state.timePassed;
-    },
-    flags: state => {
-        return state.flagsCount;
-    },
     width: state => {
         return state.width;
     },
@@ -27,9 +18,6 @@ const getters = {
 }
 
 const mutations = {
-    resetTimer(state) {
-        state.timePassed = 0 ;
-    },
     updateDifficulty(state,payload) {
         state.width = payload.width;
         state.height = payload.height;

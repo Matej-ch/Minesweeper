@@ -17,13 +17,17 @@ import Settings from "./components/Settings";
 import GameBoard from "./components/GameBoard";
 import ScoreBoard from "./components/ScoreBoard";
 
-import {mapActions} from 'vuex';
+import {mapActions, mapGetters} from 'vuex';
 
 export default {
   name: 'App',
   created() {
     this.setDifficulty({difficulty:'easy'});
     this.setBombCount(10);
+    this.setCells(this.generatedCells);
+  },
+  computed: {
+    ...mapGetters(['generatedCells']),
   },
   components: {
     ScoreBoard,
@@ -31,7 +35,7 @@ export default {
     Settings,
   },
   methods: {
-    ...mapActions(['setDifficulty','setBombCount'])
+    ...mapActions(['setDifficulty','setBombCount','setCells'])
   }
 }
 </script>

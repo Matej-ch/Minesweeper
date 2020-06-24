@@ -1,6 +1,6 @@
 <template>
     <div class="cell"
-         @click="reveal"
+         @click="reveal(cellData.id)"
          @contextmenu.prevent="flag"
          :data-surrounding-bombs="cellData.surroundingBombs"
          :class="{revealed: cellData.revealed, 'wrong-pick': gameFailed && ((cellData.bomb && cellData.revealed) || (!cellData.bomb && cellData.flagged))}">
@@ -24,19 +24,34 @@
             },
         },
         computed : {
-            ...mapGetters(['gameFailed','cells'])
+            ...mapGetters(['gameFailed','cells','tileCoordinates','index','flagsCount'])
         },
         methods: {
-            reveal: function () {
+            reveal: function (id) {
                 if(this.gameFailed) { return; }
 
-                if(this.cellData.id == undefined) { return; }
+                if(id == undefined) { return; }
 
-                if(this.cellData.flagged) { return; }
+                let cell = this.cells.find(cll => cll.id === id);
 
-                if (!this.cellData.revealed) {
-                    this.updateCellReveal(this.cellData);
+                if(cell.flagged) { return; }
 
+                if (!cell.revealed) {
+                    this.updateCellReveal(cell);
+
+
+                    if(!cell.bomb && cell.surroundingBombs === 0) {
+                        const {row,column} = this.tileCoordinates(cell.id);
+
+                        this.reveal(this.index(row - 1, column - 1)); // Reveal top left neighbour
+                        this.reveal(this.index(row - 1, column - 0)); // Reveal top neighbour
+                        this.reveal(this.index(row - 1, column + 1)); // Reveal top right neighbour
+                        this.reveal(this.index(row - 0, column - 1)); // Reveal left neighbour
+                        this.reveal(this.index(row - 0, column + 1)); // Reveal right neighbour
+                        this.reveal(this.index(row + 1, column - 1)); // Reveal bottom left neighbour
+                        this.reveal(this.index(row + 1, column - 0)); // Reveal bottom neighbour
+                        this.reveal(this.index(row + 1, column + 1)); // Reveal bottom right neighbour
+                    }
 
                 }
             },
@@ -45,6 +60,8 @@
                 if(this.gameFailed) { return; }
 
                 if(this.cellData.id == undefined) { return; }
+
+                if(this.cells.filter(cell => cell.flagged).length === this.flagsCount) { return; }
 
                 this.updateCellFlag(this.cellData);
             },
@@ -58,7 +75,7 @@
     @mixin add-shadow($offset) {
         $opposite: calc(#{$offset} * -1);
         box-shadow: inset $offset $offset 0 0 rgba(255, 255, 255, 0.45),
-        inset $opposite $opposite 0 0 rgba(0, 0, 0, 0.25);
+        inset $opposite $opposite 0 0 rgba(0, 0, 0, 0.35);
     }
 
     .cell {
@@ -68,9 +85,9 @@
         line-height: var(--size);
 
         &:not(.revealed) {
-            $shadow: calc(var(--size) / 12.5);
+            $shadow: calc(var(--size) / 15);
             @include add-shadow($shadow);
-            border-radius: 4px;
+            border-radius: 1px;
             cursor: pointer;
         }
 
