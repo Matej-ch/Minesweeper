@@ -8,7 +8,7 @@
 
 <script>
 
-    import { mapGetters } from "vuex";
+    import {mapActions,mapGetters} from "vuex";
 
     export default {
         name: "ScoreBoard",
@@ -17,8 +17,10 @@
         },
         methods : {
             reset: function () {
-
+                console.log('reset');
+                this.generateCells();
             },
+            ...mapActions(['generateCells'])
         }
     }
 </script>

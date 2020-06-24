@@ -6,40 +6,6 @@ const state ={
 }
 
 const getters = {
-    generatedCells: (state,getters) => {
-        const bombs = Array.from({length: getters.width * getters.height});
-
-        let planedBombs = 0;
-        while (planedBombs !== getters.bombsCount) {
-            const index = Math.floor(Math.random() * getters.width * getters.height);
-            if (!bombs[index]) {
-                bombs[index] = true;
-                planedBombs++;
-            }
-        }
-
-        return bombs.map((bomb, i, array) => {
-            const { row, column } = getters.tileCoordinates(i);
-
-            let surroundingBombs = 0;
-            if (array[getters.index(row - 1, column - 1)]) surroundingBombs++;
-            if (array[getters.index(row - 1, column - 0)]) surroundingBombs++;
-            if (array[getters.index(row - 1, column + 1)]) surroundingBombs++;
-            if (array[getters.index(row - 0, column - 1)]) surroundingBombs++;
-            if (array[getters.index(row - 0, column + 1)]) surroundingBombs++;
-            if (array[getters.index(row + 1, column - 1)]) surroundingBombs++;
-            if (array[getters.index(row + 1, column - 0)]) surroundingBombs++;
-            if (array[getters.index(row + 1, column + 1)]) surroundingBombs++;
-
-            return {
-                bomb,
-                flagged: false,
-                revealed: false,
-                id: i,
-                surroundingBombs
-            }
-        });
-    },
     cells: state => {
         return state.cells;
     },
@@ -71,6 +37,7 @@ const getters = {
         if(getters.gameWon) return 'WON';
         return 'IN PROGRESS';
     },
+
     time: state => {
         return state.timePassed;
     },
@@ -95,15 +62,48 @@ const mutations = {
 }
 
 const actions = {
-    setCells({commit},cells) {
-        commit('setCells',cells);
-    },
     updateCellFlag({commit},cell) {
         commit('updateCellFlag',cell);
     },
     updateCellReveal({commit},cell) {
         commit('updateCellReveal',cell);
     },
+    generateCells({ commit,getters }) {
+        const bombs = Array.from({length: getters.width * getters.height});
+
+        let planedBombs = 0;
+        while (planedBombs !== getters.bombsCount) {
+            const index = Math.floor(Math.random() * getters.width * getters.height);
+            if (!bombs[index]) {
+                bombs[index] = true;
+                planedBombs++;
+            }
+        }
+
+        let cells = bombs.map((bomb, i, array) => {
+            const { row, column } = getters.tileCoordinates(i);
+
+            let surroundingBombs = 0;
+            if (array[getters.index(row - 1, column - 1)]) surroundingBombs++;
+            if (array[getters.index(row - 1, column - 0)]) surroundingBombs++;
+            if (array[getters.index(row - 1, column + 1)]) surroundingBombs++;
+            if (array[getters.index(row - 0, column - 1)]) surroundingBombs++;
+            if (array[getters.index(row - 0, column + 1)]) surroundingBombs++;
+            if (array[getters.index(row + 1, column - 1)]) surroundingBombs++;
+            if (array[getters.index(row + 1, column - 0)]) surroundingBombs++;
+            if (array[getters.index(row + 1, column + 1)]) surroundingBombs++;
+
+            return {
+                bomb,
+                flagged: false,
+                revealed: false,
+                id: i,
+                surroundingBombs
+            }
+        })
+
+        commit('setCells',cells)
+    }
 }
 
 export  default  {

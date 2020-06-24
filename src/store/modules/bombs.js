@@ -1,5 +1,4 @@
 const state ={
-    planted: 0,
     bombsCount: 10,
 }
 
