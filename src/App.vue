@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="app" :class="darkMode === true ? 'dark' : ''">
     <div class="h-container">
       <div class="v-container">
 
@@ -21,7 +21,7 @@ import Settings from "./components/Settings";
 import GameBoard from "./components/GameBoard";
 import ScoreBoard from "./components/ScoreBoard";
 
-import {mapActions} from 'vuex';
+import {mapActions, mapGetters} from 'vuex';
 
 export default {
   name: 'App',
@@ -37,6 +37,9 @@ export default {
   },
   methods: {
     ...mapActions(['setDifficulty','setBombCount','generateCells'])
+  },
+  computed : {
+    ...mapGetters(['darkMode'])
   }
 }
 </script>
@@ -57,7 +60,16 @@ export default {
   flex-flow: wrap;
   flex-direction: column;
   justify-content: center;
+  height: 100%;
+
+  &.dark {
+    background-color: black;
+  }
 }
+
+  .dark .fullboard {
+    background-color: #a6a6a6;
+  }
 
   .fullboard {
     background-color: $bc;
@@ -74,7 +86,7 @@ export default {
   .v-container {
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
     height: 100%;
   }
 </style>

@@ -11,7 +11,7 @@
         </div>
 
         <div v-show="game" class="window game">
-            <div class="header">Game</div>
+            <div class="header">Game <a @click="game = false" class="close">X</a></div>
             <div class="content">
                 <div>
                     <button @click="difficulty('easy',10)">Easy</button>
@@ -27,12 +27,12 @@
         </div>
 
         <div v-show="display" class="window display">
-            <div class="header">Display</div>
-            <div class="content">Night mode <input type="checkbox"></div>
+            <div class="header">Display <a class="close" @click="display = false">X</a></div>
+            <div class="content">Night mode <input type="checkbox" @click="switchMode"></div>
         </div>
 
         <div v-show="controls" class="window controls">
-            <div class="header">Controls</div>
+            <div class="header">Controls <a class="close" @click="controls = false">X</a></div>
             <ul>
                 <li><span class="bold">Left-click</span> an empty square to reveal it.</li>
                 <li><span class="bold">Right-click</span> (or <span class="bold">Ctrl+click</span>) an empty square to flag it.</li>
@@ -43,7 +43,7 @@
 </template>
 
 <script>
-    import { mapActions } from "vuex";
+    import {mapActions, mapGetters} from "vuex";
 
     export default {
         name: "Settings",
@@ -54,6 +54,9 @@
                 game: false
             }
         },
+        computed : {
+            ...mapGetters(['darkMode'])
+        },
         methods: {
             difficulty: function (diffLevel,bombs) {
                 this.setDifficulty({difficulty:diffLevel});
@@ -62,12 +65,21 @@
 
                 this.setBombCount(bombs);
             },
-            ...mapActions(['setDifficulty','resetTimer','setBombCount'])
+            switchMode: function () {
+                console.log(!this.darkMode);
+                this.setDarkMode(!this.darkMode);
+            },
+            ...mapActions(['setDifficulty','resetTimer','setBombCount','setDarkMode'])
         }
     }
 </script>
 
 <style scoped lang="scss">
+
+    .dark a {
+        color: whitesmoke;
+    }
+
     .difficulty {
         display: flex;
         width: 100%;
@@ -116,5 +128,12 @@
             bottom: -38px;
             left: 60px;
         }
+    }
+
+    .close {
+        float: right;
+        font-weight: bold;
+        font-size: 1.1em;
+        cursor: pointer;
     }
 </style>

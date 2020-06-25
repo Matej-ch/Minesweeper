@@ -73,10 +73,14 @@
 
 <style scoped lang="scss">
 
-    @mixin add-shadow($offset) {
+    @mixin add-shadow($offset,$color1,$color2) {
         $opposite: calc(#{$offset} * -1);
-        box-shadow: inset $offset $offset 0 0 rgba(255, 255, 255, 0.45),
-        inset $opposite $opposite 0 0 rgba(0, 0, 0, 0.35);
+        box-shadow: inset $offset $offset 0 0 $color1,
+        inset $opposite $opposite 0 0 $color2;
+    }
+
+    .dark .cell {
+        background-color: #a6a6a6;
     }
 
     .cell {
@@ -87,7 +91,9 @@
 
         &:not(.revealed) {
             $shadow: calc(var(--size) / 15);
-            @include add-shadow($shadow);
+            $color1: rgba(255, 255, 255, 0.45);
+            $color2:rgba(0, 0, 0, 0.35);
+            @include add-shadow($shadow,$color1,$color2);
             border-radius: 1px;
             cursor: pointer;
         }

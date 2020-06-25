@@ -1,8 +1,8 @@
 <template>
     <div class="scoreboard">
-        <div>{{ remainingBombs | addLeadingZeros }}</div>
+        <div class="remaining">{{ remainingBombs | addLeadingZeros }}</div>
         <div><button @click="reset">{{ gameStatus }}</button></div>
-        <div>{{ time | addLeadingZeros }}</div>
+        <div class="time">{{ time | addLeadingZeros }}</div>
     </div>
 </template>
 
@@ -24,7 +24,7 @@
     }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
     .scoreboard {
         padding: 15px;
         width: 100%;
@@ -32,5 +32,20 @@
         display: flex;
         flex-direction: row;
         font-size: 1.5em;
+        justify-content: space-between;
+
+        .remaining {
+            font-weight: bold;
+            font-size: 1.5em;
+        }
+
+        .time {
+            font-weight: bold;
+            font-size: 1.5em;
+        }
+    }
+
+    .dark .scoreboard {
+        background-color: #a6a6a6;
     }
 </style>

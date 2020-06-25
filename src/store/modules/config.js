@@ -3,6 +3,7 @@ const state = {
     width: 8,
     height: 8,
     cellSize: 50,
+    darkMode: false,
 }
 
 const getters = {
@@ -15,6 +16,9 @@ const getters = {
     size: state => {
         return state.cellSize
     },
+    darkMode: state => {
+        return state.darkMode
+    }
 }
 
 const mutations = {
@@ -23,6 +27,9 @@ const mutations = {
         state.height = payload.height;
         state.cellSize = payload.cellSize;
         state.difficulty = payload.diff;
+    },
+    setDarkMode(state,mode) {
+        state.darkMode = mode;
     }
 }
 
@@ -40,6 +47,9 @@ const actions = {
         let selectedDiff = diffLookup.find(diffLevel => diffLevel.diff === payload.difficulty);
 
         commit('updateDifficulty',selectedDiff);
+    },
+    setDarkMode({commit},mode) {
+        commit('setDarkMode',mode);
     }
 }
 
