@@ -36,11 +36,24 @@ export default {
     Settings,
   },
   methods: {
-    ...mapActions(['setDifficulty','setBombCount','generateCells'])
+    ...mapActions(['setDifficulty','setBombCount','generateCells','timePassed','setIntervalID'])
   },
   computed : {
-    ...mapGetters(['darkMode'])
-  }
+    ...mapGetters(['darkMode','intervalID','gameInProgress'])
+  },
+  watch : {
+    gameInProgress(value) {
+
+      if (value) {
+        this.setIntervalID(setInterval(() => {
+          this.timePassed(1);
+        }, 1000));
+      } else {
+        // Once the game ended stop the timer
+        clearInterval(this.intervalID);
+      }
+    }
+  },
 }
 </script>
 

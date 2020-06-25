@@ -31,10 +31,13 @@ const getters = {
         return (rootState.width * rootState.height - rootState.bombsCount) === state.cells.filter((t) => t.revealed).length;
     },
     gameInProgress: (state) => {
-        /*if(state.gameState === || state.gameState === ) { return false; }*/
+        if(state.gameState === 1 || state.gameState === 2) { return false; }
+
         if(!state.cells.find(cll => cll.revealed)) { return false; }
 
         return true;
+
+
     },
     gameStatus: (state,getters) => {
         if(getters.gameFailed) return 'sad.png';
@@ -47,6 +50,9 @@ const getters = {
     },
     flagsCount: state => {
         return state.flagsCount;
+    },
+    intervalID: state => {
+        return state.timeIntervalID;
     }
 }
 
@@ -63,8 +69,14 @@ const mutations = {
     resetTimer(state) {
         state.timePassed = 0 ;
     },
+    timePassed(state,time) {
+        state.timePassed += time;
+    },
     setGameState(state,gameState) {
         state.gameState = gameState;
+    },
+    setIntervalID(state,id) {
+        state.timeIntervalID = id;
     }
 }
 
@@ -116,6 +128,12 @@ const actions = {
     },
     setGameState({commit},gameState) {
         commit('setGameState',gameState);
+    },
+    timePassed({commit},time) {
+        commit('timePassed',time);
+    },
+    setIntervalID({commit},id) {
+        commit('setIntervalID',id);
     }
 }
 

@@ -21,11 +21,6 @@
             },
             ...mapActions(['generateCells'])
         },
-        watch: {
-            /*gameInProgress: function () {
-
-            }*/
-        }
     }
 </script>
 

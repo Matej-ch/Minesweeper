@@ -53,6 +53,7 @@
                         this.reveal(this.index(row + 1, column + 1)); // Reveal bottom right neighbour
                     } else {
                         this.setCells(this.cells.map(cll => (cell.bomb) ? {...cll, revealed: true} : cll));
+                        this.setGameState(1);
                     }
                 }
             },
@@ -66,7 +67,7 @@
 
                 this.updateCellFlag(this.cellData);
             },
-            ...mapActions(['updateCellFlag','updateCellReveal','setCells'])
+            ...mapActions(['updateCellFlag','updateCellReveal','setCells','setGameState'])
         }
     }
 </script>
