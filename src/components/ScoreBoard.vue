@@ -1,7 +1,7 @@
 <template>
     <div class="scoreboard">
         <div class="remaining">{{ remainingBombs | addLeadingZeros }}</div>
-        <div><button @click="reset">{{ gameStatus }}</button></div>
+        <div><button class="face-btn" @click="reset"><img :src="require('@/assets/' + gameStatus + '')"></button></div>
         <div class="time">{{ time | addLeadingZeros }}</div>
     </div>
 </template>
@@ -47,5 +47,16 @@
 
     .dark .scoreboard {
         background-color: #a6a6a6;
+    }
+
+    .face-btn {
+        border: none;
+        background: none;
+        padding: 0;
+        margin: 0;
+        img{
+            max-width: 40px;
+        }
+
     }
 </style>

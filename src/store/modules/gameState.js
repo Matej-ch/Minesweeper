@@ -33,9 +33,9 @@ const getters = {
         return true;
     },
     gameStatus: (state,getters) => {
-        if(getters.gameFailed) return 'FAIL';
-        if(getters.gameWon) return 'WON';
-        return 'IN PROGRESS';
+        if(getters.gameFailed) return 'sad.png';
+        if(getters.gameWon) return 'glasses.png';
+        return 'smiley.png';
     },
 
     time: state => {
