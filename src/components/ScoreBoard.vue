@@ -20,6 +20,11 @@
                 this.generateCells();
             },
             ...mapActions(['generateCells'])
+        },
+        watch: {
+            /*gameInProgress: function () {
+
+            }*/
         }
     }
 </script>

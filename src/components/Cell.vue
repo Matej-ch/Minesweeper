@@ -34,8 +34,6 @@
 
                 let cell = this.cells.find(cll => cll.id === id);
 
-                console.log(cell);
-
                 if(cell.flagged) { return; }
 
                 if (!cell.revealed) {
@@ -53,6 +51,8 @@
                         this.reveal(this.index(row + 1, column - 1)); // Reveal bottom left neighbour
                         this.reveal(this.index(row + 1, column - 0)); // Reveal bottom neighbour
                         this.reveal(this.index(row + 1, column + 1)); // Reveal bottom right neighbour
+                    } else {
+                        this.setCells(this.cells.map(cll => (cell.bomb) ? {...cll, revealed: true} : cll));
                     }
                 }
             },
@@ -66,7 +66,7 @@
 
                 this.updateCellFlag(this.cellData);
             },
-            ...mapActions(['updateCellFlag','updateCellReveal'])
+            ...mapActions(['updateCellFlag','updateCellReveal','setCells'])
         }
     }
 </script>

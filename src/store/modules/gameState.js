@@ -3,6 +3,7 @@ const state ={
     gameState: 0,
     flagsCount: 10,
     timePassed: 0,
+    timeIntervalID: undefined,
 }
 
 const getters = {
@@ -29,7 +30,10 @@ const getters = {
     gameWon: (state,rootState) => {
         return (rootState.width * rootState.height - rootState.bombsCount) === state.cells.filter((t) => t.revealed).length;
     },
-    gameInProgress: () => {
+    gameInProgress: (state) => {
+        /*if(state.gameState === || state.gameState === ) { return false; }*/
+        if(!state.cells.find(cll => cll.revealed)) { return false; }
+
         return true;
     },
     gameStatus: (state,getters) => {
@@ -59,6 +63,9 @@ const mutations = {
     resetTimer(state) {
         state.timePassed = 0 ;
     },
+    setGameState(state,gameState) {
+        state.gameState = gameState;
+    }
 }
 
 const actions = {
@@ -103,6 +110,12 @@ const actions = {
         })
 
         commit('setCells',cells)
+    },
+    setCells({commit},cells) {
+        commit('setCells',cells);
+    },
+    setGameState({commit},gameState) {
+        commit('setGameState',gameState);
     }
 }
 
