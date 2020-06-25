@@ -5,8 +5,8 @@
          :data-surrounding-bombs="cellData.surroundingBombs"
          :class="{revealed: cellData.revealed, 'wrong-pick': gameFailed && ((cellData.bomb && cellData.revealed) || (!cellData.bomb && cellData.flagged))}">
 
-        <span v-if="cellData.flagged">F</span>
-        <span v-else-if="cellData.revealed && cellData.bomb">B</span>
+        <img class="image" v-if="cellData.flagged" :src="require('@/assets/flag.png')">
+        <img v-else-if="cellData.revealed && cellData.bomb" :src="require('@/assets/bomb.png')">
         <span v-else-if="cellData.revealed && cellData.surroundingBombs">{{ cellData.surroundingBombs }}</span>
 
     </div>
@@ -88,6 +88,11 @@
         width: var(--size);
         height: var(--size);
         line-height: var(--size);
+        display: flex;
+        flex-flow: wrap;
+        flex-direction: column;
+        justify-content: center;
+        align-content: center;
 
         &:not(.revealed) {
             $shadow: calc(var(--size) / 15);
@@ -131,5 +136,9 @@
         &[data-surrounding-bombs="8"] {
             color: gray;
         }
+    }
+
+    .image {
+        max-width: 35px;
     }
 </style>

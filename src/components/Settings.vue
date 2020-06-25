@@ -13,14 +13,17 @@
         <div v-show="game" class="window game">
             <div class="header">Game <a @click="game = false" class="close">X</a></div>
             <div class="content">
-                <div>
+                <div class="btn-wrapper">
                     <button @click="difficulty('easy',10)">Easy</button>
                 </div>
-                <div>
+                <div class="btn-wrapper">
                     <button @click="difficulty('medium',40)">Medium</button>
                 </div>
-                <div>
+                <div class="btn-wrapper">
                     <button @click="difficulty('hard',99)">Expert</button>
+                </div>
+                <div class="btn-wrapper">
+
                 </div>
             </div>
 
@@ -121,7 +124,7 @@
         }
 
         &.game {
-            bottom: -79px;
+            bottom: -162px;
         }
 
         &.display {
@@ -135,5 +138,9 @@
         font-weight: bold;
         font-size: 1.1em;
         cursor: pointer;
+    }
+    .btn-wrapper {
+        padding-bottom: 10px;
+        padding-top: 10px;
     }
 </style>
