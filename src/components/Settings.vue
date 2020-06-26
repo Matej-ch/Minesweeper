@@ -10,37 +10,42 @@
             <a @click.prevent="controls = !controls;display = false;game=false" href="#">Controls</a>
         </div>
 
-        <div v-show="game" class="window game">
-            <div class="header">Game <a @click="game = false" class="close">X</a></div>
-            <div class="content">
-                <div class="btn-wrapper">
-                    <button @click="difficulty('easy',10)">Easy</button>
-                </div>
-                <div class="btn-wrapper">
-                    <button @click="difficulty('medium',40)">Medium</button>
-                </div>
-                <div class="btn-wrapper">
-                    <button @click="difficulty('hard',99)">Expert</button>
-                </div>
-                <div class="btn-wrapper">
+        <transition name="fade">
+            <div v-show="game" class="window game">
+                <div class="header">Game <a @click="game = false" class="close">X</a></div>
+                <div class="content">
+                    <div class="btn-wrapper">
+                        <button @click="difficulty('easy',10)">Easy</button>
+                    </div>
+                    <div class="btn-wrapper">
+                        <button @click="difficulty('medium',40)">Medium</button>
+                    </div>
+                    <div class="btn-wrapper">
+                        <button @click="difficulty('hard',99)">Expert</button>
+                    </div>
+                    <div class="btn-wrapper">
 
+                    </div>
                 </div>
             </div>
+        </transition>
 
-        </div>
+        <transition name="fade">
+            <div v-show="display" class="window display">
+                <div class="header">Display <a class="close" @click="display = false">X</a></div>
+                <div class="content"><label for="nightmode">Night mode</label> <input id="nightmode" type="checkbox" @click="switchMode"></div>
+            </div>
+        </transition>
 
-        <div v-show="display" class="window display">
-            <div class="header">Display <a class="close" @click="display = false">X</a></div>
-            <div class="content">Night mode <input type="checkbox" @click="switchMode"></div>
-        </div>
-
-        <div v-show="controls" class="window controls">
-            <div class="header">Controls <a class="close" @click="controls = false">X</a></div>
-            <ul>
-                <li><span class="bold">Left-click</span> an empty square to reveal it.</li>
-                <li><span class="bold">Right-click</span> (or <span class="bold">Ctrl+click</span>) an empty square to flag it.</li>
-            </ul>
-        </div>
+        <transition name="fade">
+            <div v-show="controls" class="window controls">
+                <div class="header">Controls <a class="close" @click="controls = false">X</a></div>
+                <ul>
+                    <li><span class="bold">Left-click</span> an empty square to reveal it.</li>
+                    <li><span class="bold">Right-click</span> (or <span class="bold">Ctrl+click</span>) an empty square to flag it.</li>
+                </ul>
+            </div>
+        </transition>
 
     </div>
 </template>
@@ -69,7 +74,6 @@
                 this.setBombCount(bombs);
             },
             switchMode: function () {
-                console.log(!this.darkMode);
                 this.setDarkMode(!this.darkMode);
             },
             ...mapActions(['setDifficulty','resetTimer','setBombCount','setDarkMode'])
@@ -142,5 +146,12 @@
     .btn-wrapper {
         padding-bottom: 10px;
         padding-top: 10px;
+    }
+
+    .fade-enter-active, .fade-leave-active {
+        transition: opacity .5s;
+    }
+    .fade-enter, .fade-leave-to {
+        opacity: 0;
     }
 </style>
