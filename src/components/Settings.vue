@@ -13,15 +13,30 @@
         <transition name="fade">
             <div v-show="game" class="window game">
                 <div class="header">Game <a @click="game = false" class="close">X</a></div>
+                <div class="sub-info">
+                    <div class="center" style="min-width: 100px">&nbsp;</div>
+                    <div class="center">Width</div>
+                    <div class="center">Height</div>
+                    <div class="center">Bombs</div>
+                </div>
                 <div class="content">
                     <div class="btn-wrapper">
-                        <button @click="difficulty('easy',10)">Easy</button>
+                        <button class="btn" @click="difficulty('easy',10)">Easy</button>
+                        <div class="center">8</div>
+                        <div class="center">8</div>
+                        <div class="center">10</div>
                     </div>
                     <div class="btn-wrapper">
-                        <button @click="difficulty('medium',40)">Medium</button>
+                        <button class="btn" @click="difficulty('medium',40)">Medium</button>
+                        <div class="center">16</div>
+                        <div class="center">16</div>
+                        <div class="center">40</div>
                     </div>
                     <div class="btn-wrapper">
-                        <button @click="difficulty('hard',99)">Expert</button>
+                        <button class="btn" @click="difficulty('hard',99)">Expert</button>
+                        <div class="center">30</div>
+                        <div class="center">16</div>
+                        <div class="center">99</div>
                     </div>
                     <div class="btn-wrapper">
 
@@ -72,11 +87,13 @@
                 this.resetTimer();
 
                 this.setBombCount(bombs);
+
+                this.generateCells();
             },
             switchMode: function () {
                 this.setDarkMode(!this.darkMode);
             },
-            ...mapActions(['setDifficulty','resetTimer','setBombCount','setDarkMode'])
+            ...mapActions(['setDifficulty','resetTimer','setBombCount','setDarkMode','generateCells'])
         }
     }
 </script>
@@ -128,13 +145,22 @@
         }
 
         &.game {
-            bottom: -162px;
+            bottom: -200px;
+            min-width: 300px;
         }
 
         &.display {
             bottom: -38px;
             left: 60px;
         }
+    }
+
+    .sub-info {
+        display: flex;
+        padding: 3px;
+        justify-content: space-between;
+        flex-direction: row;
+        flex-wrap: wrap;
     }
 
     .close {
@@ -144,8 +170,33 @@
         cursor: pointer;
     }
     .btn-wrapper {
-        padding-bottom: 10px;
-        padding-top: 10px;
+        padding-bottom: 5px;
+        padding-top: 5px;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: space-between;
+    }
+
+    .btn {
+        border: 3px solid #fff;
+        color: #fff;
+        font-family: inherit;
+        font-size: inherit;
+        background: none;
+        cursor: pointer;
+        padding: 10px 20px;
+        display: inline-block;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        font-weight: 700;
+        outline: none;
+        position: relative;
+        -webkit-transition: all 0.3s;
+        -moz-transition: all 0.3s;
+        transition: all 0.3s;
+        min-width: 100px;
+
     }
 
     .fade-enter-active, .fade-leave-active {
@@ -153,5 +204,9 @@
     }
     .fade-enter, .fade-leave-to {
         opacity: 0;
+    }
+
+    .center {
+        align-self: center;
     }
 </style>

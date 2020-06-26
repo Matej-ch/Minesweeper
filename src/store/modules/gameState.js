@@ -36,8 +36,6 @@ const getters = {
         if(!state.cells.find(cll => cll.revealed)) { return false; }
 
         return true;
-
-
     },
     gameStatus: (state,getters) => {
         if(getters.gameFailed) return 'sad.png';
