@@ -43,6 +43,8 @@
         methods : {
             reset: function () {
                 this.generateCells();
+                this.time = 0;
+                this.timerIntervalID = undefined;
             },
             ...mapActions(['generateCells'])
         },
