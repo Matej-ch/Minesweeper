@@ -29,6 +29,7 @@ export default {
     this.setDifficulty({difficulty:'easy'});
     this.setBombCount(10);
     this.generateCells();
+
   },
   components: {
     ScoreBoard,
@@ -36,23 +37,10 @@ export default {
     Settings,
   },
   methods: {
-    ...mapActions(['setDifficulty','setBombCount','generateCells','timePassed','setIntervalID'])
+    ...mapActions(['setDifficulty','setBombCount','generateCells'])
   },
   computed : {
-    ...mapGetters(['darkMode','intervalID','gameInProgress'])
-  },
-  watch : {
-    gameInProgress(value) {
-
-      if (value) {
-        this.setIntervalID(setInterval(() => {
-          this.timePassed(1);
-        }, 1000));
-      } else {
-        // Once the game ended stop the timer
-        clearInterval(this.intervalID);
-      }
-    }
+    ...mapGetters(['darkMode'])
   },
 }
 </script>
@@ -87,6 +75,10 @@ export default {
   .fullboard {
     background-color: $bc;
     padding: 0 20px 20px 20px;
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
 
   .h-container {

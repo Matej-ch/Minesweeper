@@ -13,7 +13,32 @@
     export default {
         name: "ScoreBoard",
         computed: {
-            ...mapGetters(['time','remainingBombs','gameStatus'])
+            ...mapGetters(['remainingBombs','gameStatus','cells']),
+            gameIsProgress() {
+
+                if (this.gameStatus === 'sad.png'  || this.gameStatus === 'glasses.png') return false;
+
+                if (!this.cells.find((cell) => cell.revealed)) return false;
+
+                return true;
+            }
+        },
+        data: function() {
+            return {
+                time: 0, // Seconds passed since the game started
+                timerIntervalID: undefined
+            }
+        },
+        watch: {
+            gameIsProgress(value) {
+                if (value) {
+                    this.timerIntervalID = setInterval(() => {
+                        this.time++;
+                    }, 1000);
+                } else {
+                    clearInterval(this.timerIntervalID);
+                }
+            }
         },
         methods : {
             reset: function () {
