@@ -39,7 +39,10 @@
                         <div class="center">99</div>
                     </div>
                     <div class="btn-wrapper">
-
+                        <button class="btn" @click="difficulty('custom',0)">Custom</button>
+                        <div class="center"><input type="number" value="10" ref="width" class="input"></div>
+                        <div class="center"><input type="number" value="10" ref="height" class="input"></div>
+                        <div class="center"><input type="number" value="4" ref="bombs" class="input"></div>
                     </div>
                 </div>
             </div>
@@ -82,11 +85,21 @@
         },
         methods: {
             difficulty: function (diffLevel,bombs) {
-                this.setDifficulty({difficulty:diffLevel});
+
+                if(diffLevel === 'custom') {
+                    this.setDifficulty({difficulty:diffLevel,
+                        width: parseInt(this.$refs.width.value),
+                        height: parseInt(this.$refs.height.value),
+                        cellSize: 35});
+
+                    this.setBombCount(parseInt(this.$refs.bombs.value));
+                } else {
+                    this.setDifficulty({difficulty:diffLevel});
+
+                    this.setBombCount(bombs);
+                }
 
                 this.resetTimer();
-
-                this.setBombCount(bombs);
 
                 this.generateCells();
             },
@@ -145,7 +158,7 @@
         }
 
         &.game {
-            bottom: -200px;
+            bottom: -242px;
             min-width: 300px;
         }
 
@@ -208,5 +221,9 @@
 
     .center {
         align-self: center;
+    }
+
+    .input {
+        max-width: 50px;
     }
 </style>
