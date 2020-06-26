@@ -87,16 +87,16 @@
             difficulty: function (diffLevel,bombs) {
 
                 if(diffLevel === 'custom') {
+                    this.setFlags(parseInt(this.$refs.bombs.value));
                     this.setDifficulty({difficulty:diffLevel,
                         width: parseInt(this.$refs.width.value),
                         height: parseInt(this.$refs.height.value),
                         cellSize: 35});
-
                     this.setBombCount(parseInt(this.$refs.bombs.value));
                 } else {
+                    this.setFlags(this.$refs.bombs.value);
                     this.setDifficulty({difficulty:diffLevel});
-
-                    this.setBombCount(bombs);
+                    this.setBombCount(parseInt(bombs));
                 }
 
                 this.resetTimer();
@@ -106,7 +106,7 @@
             switchMode: function () {
                 this.setDarkMode(!this.darkMode);
             },
-            ...mapActions(['setDifficulty','resetTimer','setBombCount','setDarkMode','generateCells'])
+            ...mapActions(['setDifficulty','resetTimer','setBombCount','setDarkMode','generateCells','setFlags'])
         }
     }
 </script>

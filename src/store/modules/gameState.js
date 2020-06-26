@@ -75,6 +75,9 @@ const mutations = {
     },
     setIntervalID(state,id) {
         state.timeIntervalID = id;
+    },
+    setFlags(state, flags) {
+        state.flagsCount = flags;
     }
 }
 
@@ -132,6 +135,9 @@ const actions = {
     },
     setIntervalID({commit},id) {
         commit('setIntervalID',id);
+    },
+    setFlags({commit},flags) {
+        commit('setFlags',flags);
     }
 }
 

@@ -1,3 +1,3 @@
 # Minesweeper
 
-__WIP__
+Just minesweeper game in Vue
