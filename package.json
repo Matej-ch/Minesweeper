@@ -11,7 +11,7 @@
     "autoprefixer": "^9.8.6",
     "core-js": "^3.8.1",
     "vue": "^2.6.12",
-    "vuex": "^3.6.0"
+    "vuex": "^3.6.2"
   },
   "devDependencies": {
     "@vue/cli-plugin-eslint": "~4.5.9",
