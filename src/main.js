@@ -1,13 +1,11 @@
-import Vue from 'vue'
+import {createApp} from 'vue'
 import App from './App.vue'
-import store from './store'
-Vue.config.productionTip = false
+import {createPinia} from 'pinia'
 
-Vue.filter('addLeadingZeros',function (value) {
+/*Vue.filter('addLeadingZeros',function (value) {
   return (`00${value}`).slice(-3);
-})
+})*/
 
-new Vue({
-  render: h => h(App),
-  store,
-}).$mount('#app')
+createApp(App)
+    .use(createPinia())
+    .mount('#app')
