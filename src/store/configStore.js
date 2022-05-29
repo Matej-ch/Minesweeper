@@ -22,7 +22,12 @@ export const useConfigStore = defineStore('config', {
                 {diff: 'easy', width: 8, height: 8, cellSize: 50},
                 {diff: 'medium', width: 16, height: 16, cellSize: 35},
                 {diff: 'hard', width: 30, height: 16, cellSize: 25},
-                {diff: 'custom', width: payload.width, height: payload.height, cellSize: payload.cellSize}];
+                {
+                    diff: 'custom',
+                    width: payload.width || 10,
+                    height: payload.height || 10,
+                    cellSize: payload.cellSize || 35
+                }];
 
             const selectedDiff = diffLookup.find(diffLevel => diffLevel.diff === payload.difficulty);
 

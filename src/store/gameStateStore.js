@@ -42,9 +42,9 @@ export const useGameStateStore = defineStore('gameState', {
             return (config.width * config.height - bombs.bombsCount) === state.cells.filter((t) => t.revealed).length;
         },
 
-        gameStatus: () => {
-            if (this.gameFailed) return 'sad.png';
-            if (this.gameWon) return 'glasses.png';
+        gameStatus: (state) => {
+            if (state.gameFailed) return 'sad.png';
+            if (state.gameWon) return 'glasses.png';
             return 'smiley.png';
         }
     },

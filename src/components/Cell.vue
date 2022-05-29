@@ -3,143 +3,157 @@
          @click="reveal(cellData.id)"
          @contextmenu.prevent="flag"
          :data-surrounding-bombs="cellData.surroundingBombs"
-         :class="{revealed: cellData.revealed, 'wrong-pick': gameFailed && ((cellData.bomb && cellData.revealed) || (!cellData.bomb && cellData.flagged))}">
+         :class="{revealed: cellData.revealed, 'wrong-pick': gameState.gameFailed && ((cellData.bomb && cellData.revealed) || (!cellData.bomb && cellData.flagged))}">
 
-        <img class="image" v-if="cellData.flagged" :src="require('@/assets/flag.png')">
-        <img v-else-if="cellData.revealed && cellData.bomb" :src="require('@/assets/bomb.png')">
-        <span v-else-if="cellData.revealed && cellData.surroundingBombs">{{ cellData.surroundingBombs }}</span>
+        <img class="image" v-if="cellData.flagged" :src="flagUrl">
+        <img class="image" v-else-if="cellData.revealed && cellData.bomb" :src="bombUrl">
+        <span v-else-if="cellData.revealed && cellData.surroundingBombs">{{cellData.surroundingBombs}}</span>
 
     </div>
 </template>
 
-<script>
+<script setup>
 
-    import { mapGetters,mapActions } from "vuex";
+import {useGameStateStore} from "../store/gameStateStore";
 
-    export default {
-        name: "Cell",
-        props : {
-            cellData: {
-                type: Object
-            },
-        },
-        computed : {
-            ...mapGetters(['gameFailed','cells','tileCoordinates','index','flagsCount'])
-        },
-        methods: {
-            reveal: function (id) {
-                if(this.gameFailed) { return; }
+const gameState = useGameStateStore();
 
-                if(id == undefined) { return; }
+const flagUrl = new URL(`../assets/flag.png`, import.meta.url).href
+const bombUrl = new URL(`../assets/bomb.png`, import.meta.url).href
 
-                let cell = this.cells.find(cll => cll.id === id);
+const props = defineProps({
+    cellData: Object
+})
 
-                if(cell.flagged) { return; }
+function reveal(id) {
+    if (gameState.gameFailed) {
+        return;
+    }
 
-                if (!cell.revealed) {
-                    this.updateCellReveal(cell);
+    if (id === undefined || id === null) {
+        return;
+    }
 
+    let cell = gameState.cells.find(cll => cll.id === id);
 
-                    if(!cell.bomb && cell.surroundingBombs === 0) {
-                        const {row,column} = this.tileCoordinates(cell.id);
+    if (cell.flagged) {
+        return;
+    }
 
-                        this.reveal(this.index(row - 1, column - 1)); // Reveal top left neighbour
-                        this.reveal(this.index(row - 1, column - 0)); // Reveal top neighbour
-                        this.reveal(this.index(row - 1, column + 1)); // Reveal top right neighbour
-                        this.reveal(this.index(row - 0, column - 1)); // Reveal left neighbour
-                        this.reveal(this.index(row - 0, column + 1)); // Reveal right neighbour
-                        this.reveal(this.index(row + 1, column - 1)); // Reveal bottom left neighbour
-                        this.reveal(this.index(row + 1, column - 0)); // Reveal bottom neighbour
-                        this.reveal(this.index(row + 1, column + 1)); // Reveal bottom right neighbour
-                    } else {
-                        this.setCells(this.cells.map(cll => (cell.bomb) ? {...cll, revealed: true} : cll));
-                        this.setGameState(1);
-                    }
-                }
-            },
-            flag: function () {
+    if (!cell.revealed) {
+        gameState.updateCellReveal(cell);
 
-                if(this.gameFailed) { return; }
+        if (!cell.bomb && cell.surroundingBombs === 0) {
+            const {row, column} = gameState.tileCoordinates(cell.id);
 
-                if(this.cellData.id == undefined) { return; }
-
-                if(this.cells.filter(cell => cell.flagged).length === this.flagsCount) { return; }
-
-                this.updateCellFlag(this.cellData);
-            },
-            ...mapActions(['updateCellFlag','updateCellReveal','setCells','setGameState'])
+            reveal(gameState.index(row - 1, column - 1)); // Reveal top left neighbour
+            reveal(gameState.index(row - 1, column - 0)); // Reveal top neighbour
+            reveal(gameState.index(row - 1, column + 1)); // Reveal top right neighbour
+            reveal(gameState.index(row - 0, column - 1)); // Reveal left neighbour
+            reveal(gameState.index(row - 0, column + 1)); // Reveal right neighbour
+            reveal(gameState.index(row + 1, column - 1)); // Reveal bottom left neighbour
+            reveal(gameState.index(row + 1, column - 0)); // Reveal bottom neighbour
+            reveal(gameState.index(row + 1, column + 1)); // Reveal bottom right neighbour
+        } else {
+            gameState.cells = gameState.cells.map(cll => (cell.bomb) ? {...cll, revealed: true} : cll);
+            gameState.gameState = 1;
         }
     }
+}
+
+function flag() {
+    if (gameState.gameFailed) {
+        return;
+    }
+
+    if (props.cellData.id === undefined || props.cellData.id === null) {
+        return;
+    }
+
+    if (gameState.cells.filter(cell => cell.flagged).length === gameState.flagsCount) {
+        return;
+    }
+
+    gameState.updateCellFlag(props.cellData);
+}
+
 </script>
 
 <style scoped lang="scss">
 
-    @mixin add-shadow($offset,$color1,$color2) {
-        $opposite: calc(#{$offset} * -1);
-        box-shadow: inset $offset $offset 0 0 $color1,
-        inset $opposite $opposite 0 0 $color2;
+@mixin add-shadow($offset,$color1,$color2) {
+    $opposite: calc(#{$offset} * -1);
+    box-shadow: inset $offset $offset 0 0 $color1,
+    inset $opposite $opposite 0 0 $color2;
+}
+
+.dark .cell {
+    background-color: #a6a6a6;
+}
+
+.cell {
+    background-color: silver;
+    width: var(--size);
+    height: var(--size);
+    line-height: var(--size);
+    display: flex;
+    flex-flow: wrap;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
+
+    &:not(.revealed) {
+        $shadow: calc(var(--size) / 15);
+        $color1: rgba(255, 255, 255, 0.45);
+        $color2: rgba(0, 0, 0, 0.35);
+        @include add-shadow($shadow, $color1, $color2);
+        border-radius: 1px;
+        cursor: pointer;
     }
 
-    .dark .cell {
-        background-color: #a6a6a6;
+    &.revealed {
+        border: 1px solid #bdbdbd;
+        box-sizing: border-box;
     }
 
-    .cell {
-        background-color: silver;
-        width: var(--size);
-        height: var(--size);
-        line-height: var(--size);
-        display: flex;
-        flex-flow: wrap;
-        flex-direction: column;
-        justify-content: center;
-        align-content: center;
-
-        &:not(.revealed) {
-            $shadow: calc(var(--size) / 15);
-            $color1: rgba(255, 255, 255, 0.45);
-            $color2:rgba(0, 0, 0, 0.35);
-            @include add-shadow($shadow,$color1,$color2);
-            border-radius: 1px;
-            cursor: pointer;
-        }
-
-        &.revealed {
-            border: 1px solid #bdbdbd;
-            box-sizing: border-box;
-        }
-
-        &.wrong-pick {
-            background-color: lightcoral;
-        }
-
-        &[data-surrounding-bombs="1"] {
-            color: blue;
-        }
-        &[data-surrounding-bombs="2"] {
-            color: green;
-        }
-        &[data-surrounding-bombs="3"] {
-            color: red;
-        }
-        &[data-surrounding-bombs="4"] {
-            color: purple;
-        }
-        &[data-surrounding-bombs="5"] {
-            color: maroon;
-        }
-        &[data-surrounding-bombs="6"] {
-            color: turquoise;
-        }
-        &[data-surrounding-bombs="7"] {
-            color: black;
-        }
-        &[data-surrounding-bombs="8"] {
-            color: gray;
-        }
+    &.wrong-pick {
+        background-color: lightcoral;
     }
 
-    .image {
-        max-width: 35px;
+    &[data-surrounding-bombs="1"] {
+        color: blue;
     }
+
+    &[data-surrounding-bombs="2"] {
+        color: green;
+    }
+
+    &[data-surrounding-bombs="3"] {
+        color: red;
+    }
+
+    &[data-surrounding-bombs="4"] {
+        color: purple;
+    }
+
+    &[data-surrounding-bombs="5"] {
+        color: maroon;
+    }
+
+    &[data-surrounding-bombs="6"] {
+        color: turquoise;
+    }
+
+    &[data-surrounding-bombs="7"] {
+        color: black;
+    }
+
+    &[data-surrounding-bombs="8"] {
+        color: gray;
+    }
+}
+
+.image {
+    max-width: 35px;
+}
 </style>

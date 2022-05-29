@@ -40,9 +40,9 @@
                     </div>
                     <div class="btn-wrapper">
                         <button class="btn" @click="difficulty('custom',0)">Custom</button>
-                        <div class="center"><input type="number" value="10" ref="width" class="input"></div>
-                        <div class="center"><input type="number" value="10" ref="height" class="input"></div>
-                        <div class="center"><input type="number" value="4" ref="bombs" class="input"></div>
+                        <div class="center"><input type="number" value="10" ref="widthInput" class="input"></div>
+                        <div class="center"><input type="number" value="10" ref="heightInput" class="input"></div>
+                        <div class="center"><input type="number" value="4" ref="bombsInput" class="input"></div>
                     </div>
                 </div>
             </div>
@@ -51,7 +51,9 @@
         <transition name="fade">
             <div v-show="display" class="window display">
                 <div class="header">Display <a class="close" @click="display = false">X</a></div>
-                <div class="content"><label for="nightmode">Night mode</label> <input id="nightmode" type="checkbox" @click="switchMode"></div>
+                <div class="content"><label for="nightmode">Night mode</label>
+                    <input id="nightmode" type="checkbox" @click="switchMode">
+                </div>
             </div>
         </transition>
 
@@ -60,7 +62,9 @@
                 <div class="header">Controls <a class="close" @click="controls = false">X</a></div>
                 <ul>
                     <li><span class="bold">Left-click</span> an empty square to reveal it.</li>
-                    <li><span class="bold">Right-click</span> (or <span class="bold">Ctrl+click</span>) an empty square to flag it.</li>
+                    <li><span class="bold">Right-click</span> (or <span class="bold">Ctrl+click</span>) an empty square
+                        to flag it.
+                    </li>
                 </ul>
             </div>
         </transition>
@@ -68,162 +72,168 @@
     </div>
 </template>
 
-<script>
-    import {mapActions, mapGetters} from "vuex";
+<script setup>
 
-    export default {
-        name: "Settings",
-        data: function () {
-            return {
-                controls: false,
-                display: false,
-                game: false
-            }
-        },
-        computed : {
-            ...mapGetters(['darkMode'])
-        },
-        methods: {
-            difficulty: function (diffLevel,bombs) {
+import {ref} from "vue";
+import {useConfigStore} from "../store/configStore"
+import {useGameStateStore} from "../store/gameStateStore"
+import {useBombsStore} from "../store/bombsStore"
 
-                if(diffLevel === 'custom') {
-                    this.setFlags(parseInt(this.$refs.bombs.value));
-                    this.setDifficulty({difficulty:diffLevel,
-                        width: parseInt(this.$refs.width.value),
-                        height: parseInt(this.$refs.height.value),
-                        cellSize: 35});
-                    this.setBombCount(parseInt(this.$refs.bombs.value));
-                } else {
-                    this.setFlags(this.$refs.bombs.value);
-                    this.setDifficulty({difficulty:diffLevel});
-                    this.setBombCount(parseInt(bombs));
-                }
+const configState = useConfigStore()
+const gameState = useGameStateStore()
+const bombsState = useBombsStore()
 
-                this.resetTimer();
+const controls = ref(false)
+const display = ref(false)
+const game = ref(false)
 
-                this.generateCells();
-            },
-            switchMode: function () {
-                this.setDarkMode(!this.darkMode);
-            },
-            ...mapActions(['setDifficulty','resetTimer','setBombCount','setDarkMode','generateCells','setFlags'])
-        }
+const widthInput = ref(null)
+const heightInput = ref(null)
+const bombsInput = ref(null)
+
+function switchMode() {
+    configState.darkMode = !configState.darkMode;
+}
+
+function difficulty(diffLevel, bombs) {
+    if (diffLevel === 'custom') {
+
+        gameState.flagsCount = parseInt(bombsInput.value.value);
+        bombsState.bombsCount = parseInt(bombsInput.value.value);
+        configState.updateDifficulty({
+            difficulty: diffLevel,
+            width: parseInt(widthInput.value.value),
+            height: parseInt(heightInput.value.value),
+            cellSize: 35
+        });
+    } else {
+        configState.updateDifficulty({difficulty: diffLevel});
+        gameState.flagsCount = parseInt(bombs);
+        bombsState.bombsCount = parseInt(bombs);
     }
+
+    gameState.generateCells();
+}
+
 </script>
 
 <style scoped lang="scss">
 
-    .dark a {
-        color: whitesmoke;
+.dark a {
+    color: whitesmoke;
+}
+
+.difficulty {
+    display: flex;
+    width: 100%;
+    position: relative;
+
+    .setting {
+        font-size: 1.2em;
+        padding: 15px;
     }
+}
 
-    .difficulty {
-        display: flex;
-        width: 100%;
-        position: relative;
+.bold {
+    font-weight: bold;
+}
 
-        .setting {
-            font-size: 1.2em;
-            padding: 15px;
-        }
-    }
+.window {
+    position: absolute;
+    background-color: slategray;
 
-    .bold {
+    .header {
+        background-color: dodgerblue;
+        padding: 5px;
+        color: white;
         font-weight: bold;
+        text-align: left;
     }
 
-    .window {
-        position: absolute;
-        background-color: slategray;
-        .header {
-            background-color: dodgerblue;
-            padding: 5px;
-            color: white;
-            font-weight: bold;
+    .content {
+        padding: 5px;
+    }
+
+    &.controls {
+        bottom: -68px;
+        right: 8px;
+
+        ul {
             text-align: left;
-        }
-
-        .content {
-            padding: 5px;
-        }
-
-        &.controls {
-            bottom: -68px;
-            right: 8px;
-            ul {
-                text-align: left;
-                padding-left: 20px;
-                line-height: 1.5em;
-            }
-        }
-
-        &.game {
-            bottom: -242px;
-            min-width: 300px;
-        }
-
-        &.display {
-            bottom: -38px;
-            left: 60px;
+            padding-left: 20px;
+            line-height: 1.5em;
         }
     }
 
-    .sub-info {
-        display: flex;
-        padding: 3px;
-        justify-content: space-between;
-        flex-direction: row;
-        flex-wrap: wrap;
+    &.game {
+        bottom: -242px;
+        min-width: 300px;
     }
 
-    .close {
-        float: right;
-        font-weight: bold;
-        font-size: 1.1em;
-        cursor: pointer;
+    &.display {
+        bottom: -38px;
+        left: 60px;
     }
-    .btn-wrapper {
-        padding-bottom: 5px;
-        padding-top: 5px;
-        display: flex;
-        flex-direction: row;
-        flex-wrap: wrap;
-        justify-content: space-between;
-    }
+}
 
-    .btn {
-        border: 3px solid #fff;
-        color: #fff;
-        font-family: inherit;
-        font-size: inherit;
-        background: none;
-        cursor: pointer;
-        padding: 10px 20px;
-        display: inline-block;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-        font-weight: 700;
-        outline: none;
-        position: relative;
-        -webkit-transition: all 0.3s;
-        -moz-transition: all 0.3s;
-        transition: all 0.3s;
-        min-width: 100px;
+.sub-info {
+    display: flex;
+    padding: 3px;
+    justify-content: space-between;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
 
-    }
+.close {
+    float: right;
+    font-weight: bold;
+    font-size: 1.1em;
+    cursor: pointer;
+}
 
-    .fade-enter-active, .fade-leave-active {
-        transition: opacity .5s;
-    }
-    .fade-enter, .fade-leave-to {
-        opacity: 0;
-    }
+.btn-wrapper {
+    padding-bottom: 5px;
+    padding-top: 5px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
 
-    .center {
-        align-self: center;
-    }
+.btn {
+    border: 3px solid #fff;
+    color: #fff;
+    font-family: inherit;
+    font-size: inherit;
+    background: none;
+    cursor: pointer;
+    padding: 10px 20px;
+    display: inline-block;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 700;
+    outline: none;
+    position: relative;
+    -webkit-transition: all 0.3s;
+    -moz-transition: all 0.3s;
+    transition: all 0.3s;
+    min-width: 100px;
 
-    .input {
-        max-width: 50px;
-    }
+}
+
+.fade-enter-active, .fade-leave-active {
+    transition: opacity .5s;
+}
+
+.fade-enter, .fade-leave-to {
+    opacity: 0;
+}
+
+.center {
+    align-self: center;
+}
+
+.input {
+    max-width: 50px;
+}
 </style>
