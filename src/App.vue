@@ -11,6 +11,9 @@
                     <GameBoard/>
                 </div>
             </div>
+
+            <LeaderBoard/>
+
         </div>
 
     </div>
@@ -24,6 +27,7 @@ import {useConfigStore} from "./store/configStore";
 import {onMounted} from 'vue'
 import {useGameStateStore} from "./store/gameStateStore";
 import {useBombsStore} from "./store/bombsStore";
+import LeaderBoard from "./components/LeaderBoard.vue";
 
 const configState = useConfigStore();
 const gameState = useGameStateStore()

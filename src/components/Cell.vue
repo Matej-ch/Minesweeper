@@ -101,6 +101,8 @@ function flag() {
     flex-direction: column;
     justify-content: center;
     align-content: center;
+    font-weight: bold;
+    font-size: 2rem;
 
     &:not(.revealed) {
         $shadow: calc(var(--size) / 15);
