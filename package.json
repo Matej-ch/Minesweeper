@@ -14,7 +14,7 @@
     "pinia": "^2.0.14",
     "@vitejs/plugin-vue": "^2.3.3",
     "sass": "^1.52.1",
-    "vite": "^2.9.13"
+    "vite": "^2.9.16"
   },
   "browserslist": [
     "> 1%",
